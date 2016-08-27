@@ -1,2 +1,2 @@
 # chaincode-apps
-All chaincode applications
+All local chaincode applications
