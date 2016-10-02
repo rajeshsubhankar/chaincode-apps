@@ -24,7 +24,7 @@ func main() {
 	}
 }
 
-func (t *MandateChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *MandateChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	myLogger.Debug("Init Chaincode...")
 	if len(args) != 5 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 5")
@@ -123,7 +123,7 @@ func (t *MandateChaincode) Init(stub shim.ChaincodeStubInterface, function strin
 
 }
 
-func (t *MandateChaincode) updateMandate(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *MandateChaincode) updateMandate(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	myLogger.Debug("updateMandate...")
 
 	if len(args) != 3 {
@@ -192,7 +192,7 @@ func (t *MandateChaincode) updateMandate(stub shim.ChaincodeStubInterface, args 
 }
 
 
-func (t *MandateChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *MandateChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
 	// Handle different functions
 	if function == "updateMandate" {
@@ -203,7 +203,7 @@ func (t *MandateChaincode) Invoke(stub shim.ChaincodeStubInterface, function str
 	return nil, errors.New("Received unknown function invocation")
 }
 
-func (t *MandateChaincode) getCustomerDetails(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *MandateChaincode) getCustomerDetails(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	myLogger.Debug("getCustomerDetails...")
 	fmt.Printf("getCustomerDetails method started")
 
@@ -281,7 +281,7 @@ func (t *MandateChaincode) getCustomerDetails(stub shim.ChaincodeStubInterface, 
 }
 
 
-func (t *MandateChaincode) getAllCustomerDetails(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *MandateChaincode) getAllCustomerDetails(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	myLogger.Debug("getAllCustomerDetails...")
 	fmt.Printf("getAllCustomerDetails method started")
 
@@ -350,7 +350,7 @@ func (t *MandateChaincode) getAllCustomerDetails(stub shim.ChaincodeStubInterfac
 
 }
 
-func (t *MandateChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *MandateChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
 	// Handle different functions
 	if function == "single" {
