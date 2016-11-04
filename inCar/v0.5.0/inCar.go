@@ -11,10 +11,10 @@ import (
 	"time"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
-	"github.com/op/go-logging"
+	
 )
 
-var myLogger = logging.MustGetLogger("safety_device")
+//var //myLogger = logging.MustGetLogger("safety_device")
 
 // Chaincode type
 type SafetyDeviceChaincode struct {
@@ -29,7 +29,7 @@ func main() {
 
 //Init Method***********************************************************************************************************
 func (t *SafetyDeviceChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
-	myLogger.Debug("Init Chaincode...")
+	//myLogger.Debug("Init Chaincode...")
 
 	var err error
 
@@ -151,14 +151,14 @@ func (t *SafetyDeviceChaincode) Init(stub *shim.ChaincodeStub, function string, 
 		return nil, errors.New("Failed creating PanicSequenceDetails table.")
 	}
 
-	myLogger.Debug("Init Chaincode...done")
+	//myLogger.Debug("Init Chaincode...done")
 
 	return nil, nil
 }
 
 //Panic Sequence Update Method*****************************************************************************************
 func (t *SafetyDeviceChaincode) panicSequenceUpdate(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	myLogger.Debug("panicSequenceUpdate...")
+	//myLogger.Debug("panicSequenceUpdate...")
 
 	if len(args) != 8 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 8")
@@ -207,14 +207,14 @@ func (t *SafetyDeviceChaincode) panicSequenceUpdate(stub *shim.ChaincodeStub, ar
 		}
 	}
 
-	myLogger.Debug("panicSequenceUpdate...Done")
+	//myLogger.Debug("panicSequenceUpdate...Done")
 	return nil, nil
 
 }
 
 //Panic Device Update Method*****************************************************************************************
 func (t *SafetyDeviceChaincode) panicDeviceUpdate(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	myLogger.Debug("panicDeviceUpdate...")
+	//myLogger.Debug("panicDeviceUpdate...")
 
 	if len(args) != 5 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 5")
@@ -257,14 +257,14 @@ func (t *SafetyDeviceChaincode) panicDeviceUpdate(stub *shim.ChaincodeStub, args
 		}
 	}
 
-	myLogger.Debug("panicDeviceUpdate...Done")
+	//myLogger.Debug("panicDeviceUpdate...Done")
 	return nil, nil
 
 }
 
 //Vehicle Update Method*****************************************************************************************
 func (t *SafetyDeviceChaincode) vehicleUpdate(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	myLogger.Debug("vehicleUpdate...")
+	//myLogger.Debug("vehicleUpdate...")
 
 	if len(args) != 6 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 6")
@@ -309,7 +309,7 @@ func (t *SafetyDeviceChaincode) vehicleUpdate(stub *shim.ChaincodeStub, args []s
 		}
 	}
 
-	myLogger.Debug("vehicleUpdate...Done")
+	//myLogger.Debug("vehicleUpdate...Done")
 	return nil, nil
 
 }
@@ -317,7 +317,7 @@ func (t *SafetyDeviceChaincode) vehicleUpdate(stub *shim.ChaincodeStub, args []s
 //Driver Update Method*****************************************************************************************
 //NOTE: Needs to be throughly tested. update by dlNumber or aadharId
 func (t *SafetyDeviceChaincode) driverUpdate(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	myLogger.Debug("driverUpdate...")
+	//myLogger.Debug("driverUpdate...")
 
 	if len(args) != 8 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 8")
@@ -366,14 +366,14 @@ func (t *SafetyDeviceChaincode) driverUpdate(stub *shim.ChaincodeStub, args []st
 		}
 	}
 
-	myLogger.Debug("driverUpdate...Done")
+	//myLogger.Debug("driverUpdate...Done")
 	return nil, nil
 
 }
 
 //Passenger Update Method*****************************************************************************************
 func (t *SafetyDeviceChaincode) passengerUpdate(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	myLogger.Debug("passengerUpdate...")
+	//myLogger.Debug("passengerUpdate...")
 
 	if len(args) != 6 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 6")
@@ -418,14 +418,14 @@ func (t *SafetyDeviceChaincode) passengerUpdate(stub *shim.ChaincodeStub, args [
 		}
 	}
 
-	myLogger.Debug("passengerUpdate...Done")
+	//myLogger.Debug("passengerUpdate...Done")
 	return nil, nil
 
 }
 
 //Passenger's Relative Update Method*****************************************************************************************
 func (t *SafetyDeviceChaincode) passengerRelativeUpdate(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	myLogger.Debug("passengerRelativeUpdate...")
+	//myLogger.Debug("passengerRelativeUpdate...")
 
 	if len(args) != 4 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 4")
@@ -466,14 +466,14 @@ func (t *SafetyDeviceChaincode) passengerRelativeUpdate(stub *shim.ChaincodeStub
 		}
 	}
 
-	myLogger.Debug("passengerRelativeUpdate...Done")
+	//myLogger.Debug("passengerRelativeUpdate...Done")
 	return nil, nil
 
 }
 
 //Technician Update Method***********************************************************************************************
 func (t *SafetyDeviceChaincode) technicianUpdate(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	myLogger.Debug("technicianUpdate...")
+	//myLogger.Debug("technicianUpdate...")
 
 	if len(args) != 6 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 6")
@@ -518,14 +518,14 @@ func (t *SafetyDeviceChaincode) technicianUpdate(stub *shim.ChaincodeStub, args 
 		}
 	}
 
-	myLogger.Debug("technicianUpdate...Done")
+	//myLogger.Debug("technicianUpdate...Done")
 	return nil, nil
 
 }
 
 //Owner Update Method*****************************************************************************************
 func (t *SafetyDeviceChaincode) ownerUpdate(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	myLogger.Debug("ownerUpdate...")
+	//myLogger.Debug("ownerUpdate...")
 
 	if len(args) != 7 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 7")
@@ -572,7 +572,7 @@ func (t *SafetyDeviceChaincode) ownerUpdate(stub *shim.ChaincodeStub, args []str
 		}
 	}
 
-	myLogger.Debug("ownerUpdate...Done")
+	//myLogger.Debug("ownerUpdate...Done")
 	return nil, nil
 
 }
@@ -580,7 +580,7 @@ func (t *SafetyDeviceChaincode) ownerUpdate(stub *shim.ChaincodeStub, args []str
 //Invoke Method***********************************************************************************************************
 func (t *SafetyDeviceChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
-	myLogger.Debug("Invoke Chaincode...started")
+	//myLogger.Debug("Invoke Chaincode...started")
 
 	// Handle different functions
 	if function == "technicianUpdate" {
@@ -606,7 +606,7 @@ func (t *SafetyDeviceChaincode) Invoke(stub *shim.ChaincodeStub, function string
 
 //Owner Query Method*****************************************************************************************
 func (t *SafetyDeviceChaincode) ownerQuery(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	myLogger.Debug("ownerQuery...")
+	//myLogger.Debug("ownerQuery...")
 
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
@@ -657,14 +657,14 @@ func (t *SafetyDeviceChaincode) ownerQuery(stub *shim.ChaincodeStub, args []stri
 		fmt.Println(string(mapBytes))
 	}
 
-	myLogger.Debug("ownerQuery...DONE")
+	//myLogger.Debug("ownerQuery...DONE")
 	return mapBytes, nil
 
 }
 
 //Technician Query Method*****************************************************************************************
 func (t *SafetyDeviceChaincode) technicianQuery(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	myLogger.Debug("technicianQuery...")
+	//myLogger.Debug("technicianQuery...")
 
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
@@ -714,14 +714,14 @@ func (t *SafetyDeviceChaincode) technicianQuery(stub *shim.ChaincodeStub, args [
 		fmt.Println(string(mapBytes))
 	}
 
-	myLogger.Debug("technicianQuery...DONE")
+	//myLogger.Debug("technicianQuery...DONE")
 	return mapBytes, nil
 
 }
 
 //Passenger Query Method*****************************************************************************************
 func (t *SafetyDeviceChaincode) passengerQuery(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	myLogger.Debug("passengerQuery...")
+	//myLogger.Debug("passengerQuery...")
 
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
@@ -771,14 +771,14 @@ func (t *SafetyDeviceChaincode) passengerQuery(stub *shim.ChaincodeStub, args []
 		fmt.Println(string(mapBytes))
 	}
 
-	myLogger.Debug("passengerQuery...DONE")
+	//myLogger.Debug("passengerQuery...DONE")
 	return mapBytes, nil
 
 }
 
 //Passenger's Relative Query Method*****************************************************************************************
 func (t *SafetyDeviceChaincode) passengerRelativeQuery(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	myLogger.Debug("passengerRelativeQuery...")
+	//myLogger.Debug("passengerRelativeQuery...")
 
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
@@ -826,14 +826,14 @@ func (t *SafetyDeviceChaincode) passengerRelativeQuery(stub *shim.ChaincodeStub,
 		fmt.Println(string(mapBytes))
 	}
 
-	myLogger.Debug("passengerRelativeQuery...DONE")
+	//myLogger.Debug("passengerRelativeQuery...DONE")
 	return mapBytes, nil
 
 }
 
 //Driver Query Method*****************************************************************************************
 func (t *SafetyDeviceChaincode) driverQuery(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	myLogger.Debug("driverQuery...")
+	//myLogger.Debug("driverQuery...")
 
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
@@ -885,14 +885,14 @@ func (t *SafetyDeviceChaincode) driverQuery(stub *shim.ChaincodeStub, args []str
 		fmt.Println(string(mapBytes))
 	}
 
-	myLogger.Debug("driverQuery...DONE")
+	//myLogger.Debug("driverQuery...DONE")
 	return mapBytes, nil
 
 }
 
 //Vehicle Query Method*****************************************************************************************
 func (t *SafetyDeviceChaincode) vehicleQuery(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	myLogger.Debug("vehicleQuery...")
+	//myLogger.Debug("vehicleQuery...")
 
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
@@ -942,14 +942,14 @@ func (t *SafetyDeviceChaincode) vehicleQuery(stub *shim.ChaincodeStub, args []st
 		fmt.Println(string(mapBytes))
 	}
 
-	myLogger.Debug("vehicleQuery...DONE")
+	//myLogger.Debug("vehicleQuery...DONE")
 	return mapBytes, nil
 
 }
 
 //Panic Device Query Method*****************************************************************************************
 func (t *SafetyDeviceChaincode) panicDeviceQuery(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	myLogger.Debug("panicDeviceQuery...")
+	//myLogger.Debug("panicDeviceQuery...")
 
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
@@ -998,14 +998,14 @@ func (t *SafetyDeviceChaincode) panicDeviceQuery(stub *shim.ChaincodeStub, args 
 		fmt.Println(string(mapBytes))
 	}
 
-	myLogger.Debug("panicDeviceQuery...DONE")
+	//myLogger.Debug("panicDeviceQuery...DONE")
 	return mapBytes, nil
 
 }
 
 //Panic Sequence Query Method*****************************************************************************************
 func (t *SafetyDeviceChaincode) panicSequenceQuery(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	myLogger.Debug("panicSequenceQuery...")
+	//myLogger.Debug("panicSequenceQuery...")
 
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1")
@@ -1072,7 +1072,7 @@ func (t *SafetyDeviceChaincode) panicSequenceQuery(stub *shim.ChaincodeStub, arg
 			fmt.Println(string(sliceBytes))
 		}
 
-		myLogger.Debug("panicSequenceQuery...DONE")
+		//myLogger.Debug("panicSequenceQuery...DONE")
 		return sliceBytes, nil
 
 	} else {
@@ -1120,7 +1120,7 @@ func (t *SafetyDeviceChaincode) panicSequenceQuery(stub *shim.ChaincodeStub, arg
 			}
 			fmt.Println(string(mapBytes))
 		}
-		myLogger.Debug("panicSequenceQuery...DONE")
+		//myLogger.Debug("panicSequenceQuery...DONE")
 		return mapBytes, nil
 	}
 
@@ -1129,7 +1129,7 @@ func (t *SafetyDeviceChaincode) panicSequenceQuery(stub *shim.ChaincodeStub, arg
 //Query Method***********************************************************************************************************
 func (t *SafetyDeviceChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
-	myLogger.Debug("Query Chaincode...started")
+	//myLogger.Debug("Query Chaincode...started")
 
 	// Handle different functions
 	if function == "technicianQuery" {
@@ -1150,6 +1150,6 @@ func (t *SafetyDeviceChaincode) Query(stub *shim.ChaincodeStub, function string,
 		return t.panicSequenceQuery(stub, args)
 	}
 
-	myLogger.Debug("Query Chaincode...DONE")
+	//myLogger.Debug("Query Chaincode...DONE")
 	return nil, errors.New("Received unknown function invocation")
 }
