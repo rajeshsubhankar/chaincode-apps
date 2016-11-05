@@ -100,8 +100,8 @@ func (t *SafetyDeviceChaincode) Init(stub shim.ChaincodeStubInterface, function 
 		&shim.ColumnDefinition{Name: "deviceId", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "ownerId", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "picLink", Type: shim.ColumnDefinition_STRING, Key: false},
-		&shim.ColumnDefinition{Name: "dlNumber", Type: shim.ColumnDefinition_STRING, Key: true},
-		&shim.ColumnDefinition{Name: "aadharId", Type: shim.ColumnDefinition_STRING, Key: true},
+		&shim.ColumnDefinition{Name: "dlNumber", Type: shim.ColumnDefinition_STRING, Key: false},
+		&shim.ColumnDefinition{Name: "aadharId", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "lastUpdatedOn", Type: shim.ColumnDefinition_STRING, Key: false},
 	})
 	if err != nil {
