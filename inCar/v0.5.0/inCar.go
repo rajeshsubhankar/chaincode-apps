@@ -151,9 +151,183 @@ func (t *SafetyDeviceChaincode) Init(stub *shim.ChaincodeStub, function string, 
 		return nil, errors.New("Failed creating PanicSequenceDetails table.")
 	}
 
+	// Create Tracker App Notification details table
+	err = stub.CreateTable("PoliceNotifDetails", []*shim.ColumnDefinition{
+		&shim.ColumnDefinition{Name: "incidentId", Type: shim.ColumnDefinition_STRING, Key: true},
+		&shim.ColumnDefinition{Name: "policeDeviceId", Type: shim.ColumnDefinition_STRING, Key: false}, //passengerDeviceId
+		&shim.ColumnDefinition{Name: "isNotificationReceived", Type: shim.ColumnDefinition_STRING, Key: false},
+		&shim.ColumnDefinition{Name: "timestamp", Type: shim.ColumnDefinition_STRING, Key: false},
+	})
+	if err != nil {
+		return nil, errors.New("Failed creating PoliceNotifDetails table.")
+	}
+
+	// Create Panic Sequence GPS details table
+	err = stub.CreateTable("PanicSequenceGPSDetails", []*shim.ColumnDefinition{
+		&shim.ColumnDefinition{Name: "incidentId", Type: shim.ColumnDefinition_STRING, Key: true},
+		&shim.ColumnDefinition{Name: "latitude", Type: shim.ColumnDefinition_STRING, Key: false},
+		&shim.ColumnDefinition{Name: "longitude", Type: shim.ColumnDefinition_STRING, Key: false},
+		&shim.ColumnDefinition{Name: "isNotificationReceived", Type: shim.ColumnDefinition_STRING, Key: false},
+		&shim.ColumnDefinition{Name: "lastUpdatedOn", Type: shim.ColumnDefinition_STRING, Key: false},
+	})
+	if err != nil {
+		return nil, errors.New("Failed creating PanicSequenceGPSDetails table.")
+	}
+
+	// Create police Acknowledgement details table
+	err = stub.CreateTable("PoliceAcknowledgementDetails", []*shim.ColumnDefinition{
+		&shim.ColumnDefinition{Name: "incidentId", Type: shim.ColumnDefinition_STRING, Key: true},
+		&shim.ColumnDefinition{Name: "policeDeviceId", Type: shim.ColumnDefinition_STRING, Key: false},
+		&shim.ColumnDefinition{Name: "isPoliceAcknowledged", Type: shim.ColumnDefinition_STRING, Key: false},
+		&shim.ColumnDefinition{Name: "timestamp", Type: shim.ColumnDefinition_STRING, Key: false},
+	})
+	if err != nil {
+		return nil, errors.New("Failed creating PoliceAcknowledgementDetails table.")
+	}
+
 	//myLogger.Debug("Init Chaincode...done")
 
 	return nil, nil
+}
+
+//Police Acknowledgement Update Method*****************************************************************************************
+func (t *SafetyDeviceChaincode) policeAcknowledgementUpdate(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+	//myLogger.Debug("policeAcknowledgementUpdate...")
+
+	if len(args) != 3 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 3")
+		//incidentId,policeDeviceId,isPoliceAcknowledged
+	}
+
+	incidentId := args[0]
+
+	status, err := stub.ReplaceRow(
+		"PoliceAcknowledgementDetails",
+		shim.Row{
+			Columns: []*shim.Column{
+				&shim.Column{Value: &shim.Column_String_{String_: incidentId}},
+				&shim.Column{Value: &shim.Column_String_{String_: args[1]}},
+				&shim.Column{Value: &shim.Column_String_{String_: args[2]}},
+				&shim.Column{Value: &shim.Column_String_{String_: time.Now().UTC().String()}},
+			},
+		})
+	if err != nil {
+		return nil, errors.New("Failed replacing row.")
+	}
+
+	if status == false { //row doesn't exist
+		_, err = stub.InsertRow(
+			"PoliceAcknowledgementDetails",
+			shim.Row{
+				Columns: []*shim.Column{
+					&shim.Column{Value: &shim.Column_String_{String_: incidentId}},
+					&shim.Column{Value: &shim.Column_String_{String_: args[1]}},
+					&shim.Column{Value: &shim.Column_String_{String_: args[2]}},
+					&shim.Column{Value: &shim.Column_String_{String_: time.Now().UTC().String()}},
+				},
+			})
+		if err != nil {
+			return nil, errors.New("Failed inserting row.")
+		}
+	}
+
+	//myLogger.Debug("policeAcknowledgementUpdate...Done")
+	return nil, nil
+
+}
+
+//Panic Sequence GPS Update Method*****************************************************************************************
+func (t *SafetyDeviceChaincode) panicSequenceGPSUpdate(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+	//myLogger.Debug("panicSequenceGPSUpdate...")
+
+	if len(args) != 4 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 4")
+		//incidentId,latitude,longitude,isNotificationReceived
+	}
+
+	incidentId := args[0]
+
+	status, err := stub.ReplaceRow(
+		"PanicSequenceGPSDetails",
+		shim.Row{
+			Columns: []*shim.Column{
+				&shim.Column{Value: &shim.Column_String_{String_: incidentId}},
+				&shim.Column{Value: &shim.Column_String_{String_: args[1]}},
+				&shim.Column{Value: &shim.Column_String_{String_: args[2]}},
+				&shim.Column{Value: &shim.Column_String_{String_: args[3]}},
+				&shim.Column{Value: &shim.Column_String_{String_: time.Now().UTC().String()}},
+			},
+		})
+	if err != nil {
+		return nil, errors.New("Failed replacing row.")
+	}
+
+	if status == false { //row doesn't exist
+		_, err = stub.InsertRow(
+			"PanicSequenceGPSDetails",
+			shim.Row{
+				Columns: []*shim.Column{
+					&shim.Column{Value: &shim.Column_String_{String_: incidentId}},
+					&shim.Column{Value: &shim.Column_String_{String_: args[1]}},
+					&shim.Column{Value: &shim.Column_String_{String_: args[2]}},
+					&shim.Column{Value: &shim.Column_String_{String_: args[3]}},
+					&shim.Column{Value: &shim.Column_String_{String_: time.Now().UTC().String()}},
+				},
+			})
+		if err != nil {
+			return nil, errors.New("Failed inserting row.")
+		}
+	}
+
+	//myLogger.Debug("panicSequenceGPSUpdate...Done")
+	return nil, nil
+
+}
+
+//Police Notification Update Method*****************************************************************************************
+func (t *SafetyDeviceChaincode) policeNotificationUpdate(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+	//myLogger.Debug("policeNotificationUpdate...")
+
+	if len(args) != 3 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 3")
+		//incidentId,policeDeviceId,isNotificationReceived
+	}
+
+	incidentId := args[0]
+
+	status, err := stub.ReplaceRow(
+		"PoliceNotifDetails",
+		shim.Row{
+			Columns: []*shim.Column{
+				&shim.Column{Value: &shim.Column_String_{String_: incidentId}},
+				&shim.Column{Value: &shim.Column_String_{String_: args[1]}},
+				&shim.Column{Value: &shim.Column_String_{String_: args[2]}},
+				&shim.Column{Value: &shim.Column_String_{String_: time.Now().UTC().String()}},
+			},
+		})
+	if err != nil {
+		return nil, errors.New("Failed replacing row.")
+	}
+
+	if status == false { //row doesn't exist
+		_, err = stub.InsertRow(
+			"PoliceNotifDetails",
+			shim.Row{
+				Columns: []*shim.Column{
+					&shim.Column{Value: &shim.Column_String_{String_: incidentId}},
+					&shim.Column{Value: &shim.Column_String_{String_: args[1]}},
+					&shim.Column{Value: &shim.Column_String_{String_: args[2]}},
+					&shim.Column{Value: &shim.Column_String_{String_: time.Now().UTC().String()}},
+				},
+			})
+		if err != nil {
+			return nil, errors.New("Failed inserting row.")
+		}
+	}
+
+	//myLogger.Debug("policeNotificationUpdate...Done")
+	return nil, nil
+
 }
 
 //Panic Sequence Update Method*****************************************************************************************
@@ -599,6 +773,12 @@ func (t *SafetyDeviceChaincode) Invoke(stub *shim.ChaincodeStub, function string
 		return t.panicDeviceUpdate(stub, args)
 	} else if function == "panicSequenceUpdate" {
 		return t.panicSequenceUpdate(stub, args)
+	}else if function == "policeNotificationUpdate" {
+		return t.policeNotificationUpdate(stub, args)
+	}else if function == "panicSequenceGPSUpdate" {
+		return t.panicSequenceGPSUpdate(stub, args)
+	}else if function == "policeAcknowledgementUpdate" {
+		return t.policeAcknowledgementUpdate(stub, args)
 	}
 
 	return nil, errors.New("Received unknown function invocation")
@@ -1126,6 +1306,169 @@ func (t *SafetyDeviceChaincode) panicSequenceQuery(stub *shim.ChaincodeStub, arg
 
 }
 
+//Police Notification Query Method*****************************************************************************************
+func (t *SafetyDeviceChaincode) policeNotificationQuery(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+	//myLogger.Debug("policeNotificationQuery...")
+
+	if len(args) != 1 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 1")
+		//incidentId
+	}
+
+	incidentId := args[0]
+
+	var columns []shim.Column
+	col1 := shim.Column{Value: &shim.Column_String_{String_: incidentId}}
+	columns = append(columns, col1)
+	row, err := stub.GetRow("PoliceNotifDetails", columns)
+	if err != nil {
+		return nil, fmt.Errorf("Failed retrieving police notification details [%s]: [%s]", incidentId, err)
+	}
+
+	//contentsBytes, err := json.Marshal(row)
+	//if err != nil {
+	//return nil, fmt.Errorf("Failed marshal all contents: %v", err)
+	//}
+	//fmt.Println(string(contentsBytes))
+
+	var m map[string]string
+	var mapBytes []byte
+	m = make(map[string]string)
+
+	if len(row.Columns) == 0 {
+		mapBytes, err = json.Marshal(m)
+		if err != nil {
+			return nil, fmt.Errorf("Failed marshal all map contents: %v", err)
+		}
+		fmt.Println(string(mapBytes))
+	} else {
+
+		m["incidentId"] = row.Columns[0].GetString_()
+		m["policeDeviceId"] = row.Columns[1].GetString_()
+		m["isNotificationReceived"] = row.Columns[2].GetString_()
+		m["timestamp"] = row.Columns[3].GetString_()
+
+		mapBytes, err = json.Marshal(m)
+		if err != nil {
+			return nil, fmt.Errorf("Failed marshal all map contents: %v", err)
+		}
+		fmt.Println(string(mapBytes))
+	}
+
+	//myLogger.Debug("policeNotificationQuery...DONE")
+	return mapBytes, nil
+
+}
+
+//Panic Sequence GPS Query Method*****************************************************************************************
+func (t *SafetyDeviceChaincode) panicSequenceGPSQuery(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+	//myLogger.Debug("panicSequenceGPSQuery...")
+
+	if len(args) != 1 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 1")
+		//incidentId
+	}
+
+	incidentId := args[0]
+
+	var columns []shim.Column
+	col1 := shim.Column{Value: &shim.Column_String_{String_: incidentId}}
+	columns = append(columns, col1)
+	row, err := stub.GetRow("PanicSequenceGPSDetails", columns)
+	if err != nil {
+		return nil, fmt.Errorf("Failed retrieving GPS details [%s]: [%s]", incidentId, err)
+	}
+
+	//contentsBytes, err := json.Marshal(row)
+	//if err != nil {
+	//return nil, fmt.Errorf("Failed marshal all contents: %v", err)
+	//}
+	//fmt.Println(string(contentsBytes))
+
+	var m map[string]string
+	var mapBytes []byte
+	m = make(map[string]string)
+
+	if len(row.Columns) == 0 {
+		mapBytes, err = json.Marshal(m)
+		if err != nil {
+			return nil, fmt.Errorf("Failed marshal all map contents: %v", err)
+		}
+		fmt.Println(string(mapBytes))
+	} else {
+
+		m["incidentId"] = row.Columns[0].GetString_()
+		m["latitude"] = row.Columns[1].GetString_()
+		m["longitude"] = row.Columns[2].GetString_()
+		m["isNotificationReceived"] = row.Columns[3].GetString_()
+		m["lastUpdatedOn"] = row.Columns[4].GetString_()
+
+		mapBytes, err = json.Marshal(m)
+		if err != nil {
+			return nil, fmt.Errorf("Failed marshal all map contents: %v", err)
+		}
+		fmt.Println(string(mapBytes))
+	}
+
+	//myLogger.Debug("panicSequenceGPSQuery...DONE")
+	return mapBytes, nil
+
+}
+
+//Police Acknowledgement Query Method*****************************************************************************************
+func (t *SafetyDeviceChaincode) policeAcknowledgementQuery(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+	//myLogger.Debug("policeAcknowledgementQuery...")
+
+	if len(args) != 1 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 1")
+		//incidentId
+	}
+
+	incidentId := args[0]
+
+	var columns []shim.Column
+	col1 := shim.Column{Value: &shim.Column_String_{String_: incidentId}}
+	columns = append(columns, col1)
+	row, err := stub.GetRow("PoliceAcknowledgementDetails", columns)
+	if err != nil {
+		return nil, fmt.Errorf("Failed retrieving police notification details [%s]: [%s]", incidentId, err)
+	}
+
+	//contentsBytes, err := json.Marshal(row)
+	//if err != nil {
+	//return nil, fmt.Errorf("Failed marshal all contents: %v", err)
+	//}
+	//fmt.Println(string(contentsBytes))
+
+	var m map[string]string
+	var mapBytes []byte
+	m = make(map[string]string)
+
+	if len(row.Columns) == 0 {
+		mapBytes, err = json.Marshal(m)
+		if err != nil {
+			return nil, fmt.Errorf("Failed marshal all map contents: %v", err)
+		}
+		fmt.Println(string(mapBytes))
+	} else {
+
+		m["incidentId"] = row.Columns[0].GetString_()
+		m["policeDeviceId"] = row.Columns[1].GetString_()
+		m["isPoliceAcknowledged"] = row.Columns[2].GetString_()
+		m["timestamp"] = row.Columns[3].GetString_()
+
+		mapBytes, err = json.Marshal(m)
+		if err != nil {
+			return nil, fmt.Errorf("Failed marshal all map contents: %v", err)
+		}
+		fmt.Println(string(mapBytes))
+	}
+
+	//myLogger.Debug("policeAcknowledgementQuery...DONE")
+	return mapBytes, nil
+
+}
+
 //Query Method***********************************************************************************************************
 func (t *SafetyDeviceChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
@@ -1148,6 +1491,12 @@ func (t *SafetyDeviceChaincode) Query(stub *shim.ChaincodeStub, function string,
 		return t.panicDeviceQuery(stub, args)
 	} else if function == "panicSequenceQuery" {
 		return t.panicSequenceQuery(stub, args)
+	}else if function == "policeNotificationQuery" {
+		return t.policeNotificationQuery(stub, args)
+	}else if function == "panicSequenceGPSQuery" {
+		return t.panicSequenceGPSQuery(stub, args)
+	}else if function == "policeAcknowledgementQuery" {
+		return t.policeAcknowledgementQuery(stub, args)
 	}
 
 	//myLogger.Debug("Query Chaincode...DONE")
