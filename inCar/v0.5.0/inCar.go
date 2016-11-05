@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
-	
+
 )
 
 //var //myLogger = logging.MustGetLogger("safety_device")
@@ -100,8 +100,8 @@ func (t *SafetyDeviceChaincode) Init(stub *shim.ChaincodeStub, function string, 
 		&shim.ColumnDefinition{Name: "deviceId", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "ownerId", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "picLink", Type: shim.ColumnDefinition_STRING, Key: false},
-		&shim.ColumnDefinition{Name: "dlNumber", Type: shim.ColumnDefinition_STRING, Key: true},
-		&shim.ColumnDefinition{Name: "aadharId", Type: shim.ColumnDefinition_STRING, Key: true},
+		&shim.ColumnDefinition{Name: "dlNumber", Type: shim.ColumnDefinition_STRING, Key: false},
+		&shim.ColumnDefinition{Name: "aadharId", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "lastUpdatedOn", Type: shim.ColumnDefinition_STRING, Key: false},
 	})
 	if err != nil {
