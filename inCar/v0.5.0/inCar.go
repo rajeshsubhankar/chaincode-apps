@@ -179,6 +179,8 @@ func (t *SafetyDeviceChaincode) Init(stub *shim.ChaincodeStub, function string, 
 		&shim.ColumnDefinition{Name: "incidentId", Type: shim.ColumnDefinition_STRING, Key: true},
 		&shim.ColumnDefinition{Name: "policeDeviceId", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "isPoliceAcknowledged", Type: shim.ColumnDefinition_STRING, Key: false},
+		&shim.ColumnDefinition{Name: "videoHash", Type: shim.ColumnDefinition_STRING, Key: false},
+		&shim.ColumnDefinition{Name: "audioHash", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "timestamp", Type: shim.ColumnDefinition_STRING, Key: false},
 	})
 	if err != nil {
@@ -194,9 +196,9 @@ func (t *SafetyDeviceChaincode) Init(stub *shim.ChaincodeStub, function string, 
 func (t *SafetyDeviceChaincode) policeAcknowledgementUpdate(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	//myLogger.Debug("policeAcknowledgementUpdate...")
 
-	if len(args) != 3 {
+	if len(args) != 5 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 3")
-		//incidentId,policeDeviceId,isPoliceAcknowledged
+		//incidentId,policeDeviceId,isPoliceAcknowledged, videoHash, audioHash
 	}
 
 	incidentId := args[0]
@@ -208,7 +210,10 @@ func (t *SafetyDeviceChaincode) policeAcknowledgementUpdate(stub *shim.Chaincode
 				&shim.Column{Value: &shim.Column_String_{String_: incidentId}},
 				&shim.Column{Value: &shim.Column_String_{String_: args[1]}},
 				&shim.Column{Value: &shim.Column_String_{String_: args[2]}},
+				&shim.Column{Value: &shim.Column_String_{String_: args[3]}},
+				&shim.Column{Value: &shim.Column_String_{String_: args[4]}},
 				&shim.Column{Value: &shim.Column_String_{String_: time.Now().UTC().String()}},
+
 			},
 		})
 	if err != nil {
@@ -223,6 +228,8 @@ func (t *SafetyDeviceChaincode) policeAcknowledgementUpdate(stub *shim.Chaincode
 					&shim.Column{Value: &shim.Column_String_{String_: incidentId}},
 					&shim.Column{Value: &shim.Column_String_{String_: args[1]}},
 					&shim.Column{Value: &shim.Column_String_{String_: args[2]}},
+					&shim.Column{Value: &shim.Column_String_{String_: args[3]}},
+					&shim.Column{Value: &shim.Column_String_{String_: args[4]}},
 					&shim.Column{Value: &shim.Column_String_{String_: time.Now().UTC().String()}},
 				},
 			})
@@ -1455,7 +1462,9 @@ func (t *SafetyDeviceChaincode) policeAcknowledgementQuery(stub *shim.ChaincodeS
 		m["incidentId"] = row.Columns[0].GetString_()
 		m["policeDeviceId"] = row.Columns[1].GetString_()
 		m["isPoliceAcknowledged"] = row.Columns[2].GetString_()
-		m["timestamp"] = row.Columns[3].GetString_()
+		m["videoHash"] = row.Columns[3].GetString_()
+		m["audioHash"] = row.Columns[4].GetString_()
+		m["timestamp"] = row.Columns[5].GetString_()
 
 		mapBytes, err = json.Marshal(m)
 		if err != nil {
