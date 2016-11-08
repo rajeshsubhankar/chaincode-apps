@@ -197,7 +197,7 @@ func (t *SafetyDeviceChaincode) policeAcknowledgementUpdate(stub *shim.Chaincode
 	//myLogger.Debug("policeAcknowledgementUpdate...")
 
 	if len(args) != 5 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 3")
+		return nil, errors.New("Incorrect number of arguments. Expecting 5")
 		//incidentId,policeDeviceId,isPoliceAcknowledged, videoHash, audioHash
 	}
 
