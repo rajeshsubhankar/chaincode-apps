@@ -2,6 +2,7 @@
 Shim interface changed <https://github.com/hyperledger/fabric-chaintool/pull/25/files?diff=split>
 Below code is based on latest chaincode shim. This might not work in IBM Bluemix
 */
+//Redeploying
 package main
 
 import (
